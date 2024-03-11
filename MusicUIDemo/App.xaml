@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Application
+    x:Class="MusicUIDemo.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:MusicUIDemo.Models"
+    xmlns:local="using:MusicUIDemo">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!--以后想到办法了请用模板解决-->
+            <local:PlayStatusToStringIcon x:Key="bool_play_icon_converter"/>
+            <local:MusicItemToAlbumImage x:Key="music_album_image_coverter"/>
+            <local:MusicItemToTitle x:Key="music_title_coverter"/>
+            <local:MusicItemToArtist x:Key="music_artist_coverter"/>
+            <local:MusicItemToTotalTimeString x:Key="music_totaltime_string_coverter"/>
+            <local:MusicItemToMaxTimeSeconds x:Key="music_maxseconds_coverter"/>
+            <local:MusicPlayerGetCurrentSeconds x:Key="player_playseconds_coverter"/>
+            <local:TimeOnlyToLongString x:Key="timeonly_longstring_coverter"/>
+
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <!-- Other merged dictionaries here -->
+            </ResourceDictionary.MergedDictionaries>
+            <!-- Other app resources here -->
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="MusicUIDemo.Views.MusicListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicUIDemo.Views"
+    xmlns:models="using:MusicUIDemo.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    d:DataContext="{d:DesignInstance Type=models:MusicItem}"
+    mc:Ignorable="d"
+    Background="Transparent">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <RelativePanel Grid.Row="0"
+                       x:Name="list_label" Height="50" 
+                       RelativePanel.AlignTopWithPanel="True"
+                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TextBlock Margin="40,10,0,10"
+                RelativePanel.AlignVerticalCenterWithPanel="True"
+                RelativePanel.AlignLeftWithPanel="True">歌名/歌手</TextBlock>
+            <TextBlock Margin="0,0,250,0"
+                RelativePanel.LeftOf="time_label"
+                RelativePanel.AlignVerticalCenterWithPanel="True">专辑</TextBlock>
+            <TextBlock x:Name="time_label" Margin="0,0,45,0"
+                RelativePanel.AlignVerticalCenterWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True">时长</TextBlock> 
+        </RelativePanel>
+        <ListView Grid.Row="1" x:Name="music_list" SelectionMode="Single"
+                  RelativePanel.Below="list_label" 
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:MusicItem" >
+                    <ListViewItem IsDoubleTapEnabled="True" DoubleTapped="ListViewItem_DoubleTapped">
+                    <RelativePanel Margin="5">
+                        <StackPanel Orientation="Horizontal" RelativePanel.AlignLeftWithPanel="True" HorizontalAlignment="Stretch" >
+                            <!--专辑图片-->
+                            <!--<Image 
+                                x:Name="album_img" 
+                                Margin="0,0,5,0" Height="50" Width="50"
+                                Stretch="UniformToFill"
+                                Source="{x:Bind AlbumImage}"/>-->
+                                <Image Margin="0,0,5,0" Height="50" Width="50"
+                                       Stretch="UniformToFill" 
+                                       Source="{x:Bind AlbumImage, TargetNullValue='ms-appx:///Assets/image/music.png'}" />
+                                <StackPanel Margin="5" Width="300">
+                                <TextBlock Text="{x:Bind Title}" >歌曲名</TextBlock>
+                                <TextBlock Text="{x:Bind Artist}">歌手</TextBlock>
+                            </StackPanel>
+                        </StackPanel >
+
+                        <!--控制工具：删除、添加到其他播放列表、收藏等-->
+                        <StackPanel x:Name="tool"
+                                  Orientation="Horizontal"
+                                  RelativePanel.AlignHorizontalCenterWithPanel="True"
+                                  RelativePanel.AlignVerticalCenterWithPanel="True">
+                            <!--播放按钮-->
+                            <Button FontFamily="Segoe MDL2 Assets" Content="&#xE768;"
+                                    Margin="3,0,3,0" BorderThickness="0" 
+                                    Background="Transparent" FontSize="15"
+                                    Click="Play_Btn_Click"/>
+                            <!--收藏按钮-->
+                            <Button FontFamily="Segoe MDL2 Assets" Content="&#xEB51;"
+                                Margin="3,0,3,0" BorderThickness="0"  Background="Transparent" FontSize="15"/>
+                            <!--删除按钮-->
+                            <Button FontFamily="Segoe MDL2 Assets" Content="&#xe74d;"
+                                    Margin="3,0,3,0" BorderThickness="0"   
+                                    Background="Transparent" FontSize="15"
+                                    Click="Remove_Btn_Click"/>
+                            <!--添加列表按钮-->
+                            <Button FontFamily="Segoe MDL2 Assets" Content="&#xe710;"
+                                Margin="3,0,50,0" BorderThickness="0"  Background="Transparent" FontSize="15"/>
+                        </StackPanel>
+                        <!--专辑名和时长-->
+                        <TextBlock x:Name="album" Width="300"
+                                    RelativePanel.AlignVerticalCenterWithPanel="True" 
+                                    RelativePanel.LeftOf="time" 
+                                   RelativePanel.RightOf="tool"
+                                    Margin="0,0,80,0" Text="{x:Bind Album}">专辑</TextBlock>
+
+                        <TextBlock 
+                                x:Name="time"
+                                RelativePanel.AlignVerticalCenterWithPanel="True"  
+                                RelativePanel.AlignRightWithPanel="True" 
+                                Margin="0,0,20,0" Text="{x:Bind TimeString}">时长</TextBlock>     
+                    </RelativePanel>
+                    </ListViewItem>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>

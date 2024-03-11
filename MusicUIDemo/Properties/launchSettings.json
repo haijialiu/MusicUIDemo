@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "MusicUIDemo (Package)": {
+      "commandName": "MsixPackage",
+      "nativeDebugging": true
+    },
+    "MusicUIDemo (Unpackaged)": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

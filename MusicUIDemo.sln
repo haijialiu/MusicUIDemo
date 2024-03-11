@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicUIDemo", "MusicUIDemo\MusicUIDemo.csproj", "{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FFmpegAudio", "FFmpegAudio\FFmpegAudio.vcxproj", "{A6B244AA-25EE-4F75-A04C-6D5428B7105D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM64 = Debug|ARM64
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|ARM64 = Release|ARM64
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Debug|ARM64.Build.0 = Debug|ARM64
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Debug|x64.ActiveCfg = Debug|x64
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Debug|x64.Build.0 = Debug|x64
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Debug|x64.Deploy.0 = Debug|x64
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Debug|x86.ActiveCfg = Debug|x86
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Debug|x86.Build.0 = Debug|x86
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Debug|x86.Deploy.0 = Debug|x86
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Release|ARM64.ActiveCfg = Release|ARM64
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Release|ARM64.Build.0 = Release|ARM64
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Release|ARM64.Deploy.0 = Release|ARM64
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Release|x64.ActiveCfg = Release|x64
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Release|x64.Build.0 = Release|x64
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Release|x64.Deploy.0 = Release|x64
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Release|x86.ActiveCfg = Release|x86
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Release|x86.Build.0 = Release|x86
+		{52A70B93-23AB-4CB8-A929-615EFCBD5D3D}.Release|x86.Deploy.0 = Release|x86
+		{A6B244AA-25EE-4F75-A04C-6D5428B7105D}.Debug|ARM64.ActiveCfg = Debug|x64
+		{A6B244AA-25EE-4F75-A04C-6D5428B7105D}.Debug|ARM64.Build.0 = Debug|x64
+		{A6B244AA-25EE-4F75-A04C-6D5428B7105D}.Debug|x64.ActiveCfg = Debug|x64
+		{A6B244AA-25EE-4F75-A04C-6D5428B7105D}.Debug|x64.Build.0 = Debug|x64
+		{A6B244AA-25EE-4F75-A04C-6D5428B7105D}.Debug|x86.ActiveCfg = Debug|Win32
+		{A6B244AA-25EE-4F75-A04C-6D5428B7105D}.Debug|x86.Build.0 = Debug|Win32
+		{A6B244AA-25EE-4F75-A04C-6D5428B7105D}.Release|ARM64.ActiveCfg = Release|x64
+		{A6B244AA-25EE-4F75-A04C-6D5428B7105D}.Release|ARM64.Build.0 = Release|x64
+		{A6B244AA-25EE-4F75-A04C-6D5428B7105D}.Release|x64.ActiveCfg = Release|x64
+		{A6B244AA-25EE-4F75-A04C-6D5428B7105D}.Release|x64.Build.0 = Release|x64
+		{A6B244AA-25EE-4F75-A04C-6D5428B7105D}.Release|x86.ActiveCfg = Release|Win32
+		{A6B244AA-25EE-4F75-A04C-6D5428B7105D}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {916F15EA-718A-4451-BB09-2415F2D33EDD}
+	EndGlobalSection
+EndGlobal

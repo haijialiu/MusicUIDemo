@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="MusicUIDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicUIDemo"
+    xmlns:views="using:MusicUIDemo.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    
+    <Grid MinWidth="1280" MinHeight="720">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="150"/>
+        </Grid.RowDefinitions>
+        <Border Background="#FFFACD"/>
+        <Border Grid.Column ="1" Background="#F0FFF0"/>
+        <Border Grid.Row="1" Grid.ColumnSpan="2" Background="#E6E6FA"/>
+
+
+        <NavigationView Grid.Column="1" Grid.Row="0" x:Name="MainNavition" 
+                        SelectionChanged="MainNavition_SelectionChanged" OpenPaneLength="250">
+            <NavigationView.Header>
+                <TextBlock TextAlignment="Start" x:Name="NaviHeader" Text="主页"/>
+            </NavigationView.Header>
+            <NavigationView.MenuItems>
+                <NavigationViewItem Icon="Home" Content="主页" Tag="MainPage"/>
+                <NavigationViewItem Icon="Favorite" Content="我喜欢" Tag="Favo"/>
+                <NavigationViewItem Icon="Download" Content="本地音乐" Tag="Local"/>
+                <ListView x:Name="music_list">
+                    
+                </ListView>
+            </NavigationView.MenuItems>
+            <Frame x:Name="contentFrame"/>
+        </NavigationView>
+        <views:PlayerController Grid.Row="2"/>
+    </Grid>
+
+</Window>

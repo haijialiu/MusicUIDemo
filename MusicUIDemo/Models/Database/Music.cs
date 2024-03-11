@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.UI.Xaml.Media.Imaging;
+using MusicUIDemo.common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -32,7 +34,7 @@ namespace MusicUIDemo.Models.Database
         public string Album { get; set; } 
 
         [Column(Order = 4), Comment("时长（秒）")]
-        public long Time { get; set; }
+        public double Time { get; set; }
 
         [Column(Order = 5), Comment("专辑图")]
         public byte[] AlbumImage { get; set; }
@@ -59,8 +61,22 @@ namespace MusicUIDemo.Models.Database
         public void Configure(EntityTypeBuilder<Music> builder)
         {
             builder
-                .Property(music => music.FilePath)
-                .IsRequired();
+                .HasMany(m => m.MusicLists)
+                .WithMany(list => list.Musics)
+                .UsingEntity<MusicMusicList>();
+
+
+            //var folderPath = @"C:\Users\89422\source\repos\GetStartedApp\GetStartedApp\Assets\music";
+            //var files_path = Directory.GetFiles(folderPath);
+            //List<Music> list = [];
+
+            //foreach (var file_path in files_path)
+            //{
+            //    var item = MediaInfo.GetMusic(file_path);
+            //    item.Id = list.Count + 1;
+            //    list.Add(item);
+            //}
+            //builder.HasData(list);
         }
     }
 }

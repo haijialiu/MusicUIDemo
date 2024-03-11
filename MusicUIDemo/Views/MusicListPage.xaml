@@ -3,11 +3,11 @@
     x:Class="MusicUIDemo.Views.MusicListPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:MusicUIDemo.Views"
-    xmlns:models="using:MusicUIDemo.Models"
+    xmlns:local="using:MusicUIDemo"
+    xmlns:models="using:MusicUIDemo.Models.Database"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    d:DataContext="{d:DesignInstance Type=models:MusicItem}"
+    d:DataContext="{d:DesignInstance Type=models:Music}"
     mc:Ignorable="d"
     Background="Transparent">
     <Grid>
@@ -18,6 +18,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        <!--改模板-->
         <RelativePanel Grid.Row="0"
                        x:Name="list_label" Height="50" 
                        RelativePanel.AlignTopWithPanel="True"
@@ -36,7 +37,7 @@
                   RelativePanel.Below="list_label" 
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="models:MusicItem" >
+                <DataTemplate x:DataType="models:Music" >
                     <ListViewItem IsDoubleTapEnabled="True" DoubleTapped="ListViewItem_DoubleTapped">
                     <RelativePanel Margin="5">
                         <StackPanel Orientation="Horizontal" RelativePanel.AlignLeftWithPanel="True" HorizontalAlignment="Stretch" >
@@ -48,7 +49,7 @@
                                 Source="{x:Bind AlbumImage}"/>-->
                                 <Image Margin="0,0,5,0" Height="50" Width="50"
                                        Stretch="UniformToFill" 
-                                       Source="{x:Bind AlbumImage, TargetNullValue='ms-appx:///Assets/image/music.png'}" />
+                                       Source="{x:Bind AlbumImage,Converter={StaticResource bytes_bitmapimage_coverter},TargetNullValue='ms-appx:///Assets/image/music.png'}" />
                                 <StackPanel Margin="5" Width="300">
                                 <TextBlock Text="{x:Bind Title}" >歌曲名</TextBlock>
                                 <TextBlock Text="{x:Bind Artist}">歌手</TextBlock>
@@ -88,7 +89,7 @@
                                 x:Name="time"
                                 RelativePanel.AlignVerticalCenterWithPanel="True"  
                                 RelativePanel.AlignRightWithPanel="True" 
-                                Margin="0,0,20,0" Text="{x:Bind TimeString}">时长</TextBlock>     
+                                Margin="0,0,20,0" Text="{x:Bind Time,Converter={StaticResource seconds_string_coverter}}">时长</TextBlock>     
                     </RelativePanel>
                     </ListViewItem>
                 </DataTemplate>

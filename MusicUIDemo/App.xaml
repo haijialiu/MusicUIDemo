@@ -13,9 +13,11 @@
             <local:MusicItemToTitle x:Key="music_title_coverter"/>
             <local:MusicItemToArtist x:Key="music_artist_coverter"/>
             <local:MusicItemToTotalTimeString x:Key="music_totaltime_string_coverter"/>
-            <local:MusicItemToMaxTimeSeconds x:Key="music_maxseconds_coverter"/>
+            <local:MusicToMaxTimeSeconds x:Key="music_maxseconds_coverter"/>
             <local:MusicPlayerGetCurrentSeconds x:Key="player_playseconds_coverter"/>
             <local:TimeOnlyToLongString x:Key="timeonly_longstring_coverter"/>
+            <local:ByteArrayToBitmapImage x:Key="bytes_bitmapimage_coverter"/>
+            <local:SecondsToString x:Key="seconds_string_coverter"/>
 
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />

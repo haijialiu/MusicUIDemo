@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using MusicUIDemo.Models.Database;
 
 namespace MusicUIDemo.common
 {
@@ -35,13 +36,14 @@ namespace MusicUIDemo.common
         {
             return share_play_status();
         }
-        public static double PlayedTime()
+        public static long PlayedTime()
         {
 
             var seconds = share_play_time();
             if (seconds > 0)
             {
-                return seconds;
+                return (long)seconds;
+
                 //Microsoft.UI.Dispatching.DispatcherQueue dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
                 //dispatcherQueue.TryEnqueue(() =>
                 //{
@@ -58,14 +60,14 @@ namespace MusicUIDemo.common
         {
             _ = create_player();
         }
-        public static void InputMusic(List<MusicItem> musics)
+        public static void InputMusic(List<Music> musics)
         {
-            List<string> musicUrls = new();
+            List<string> musicUrls = [];
             foreach (var item in musics)
             {
                 musicUrls.Add(item.FilePath);
             }
-            _ =  input_music_urls(musicUrls.ToArray(), musicUrls.Count);
+            _ =  input_music_urls([.. musicUrls], musicUrls.Count);
 
         }   
         public static void OperatePlayer(string action,string value)

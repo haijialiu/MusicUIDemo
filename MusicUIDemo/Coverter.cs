@@ -1,10 +1,14 @@
 ﻿using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Media.Imaging;
 using MusicUIDemo.Models;
+using MusicUIDemo.Models.Database;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage.Streams;
 
 namespace MusicUIDemo
 {
@@ -42,7 +46,10 @@ namespace MusicUIDemo
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return ((MusicItem)value).AlbumImage;
+
+            var converter = new ByteArrayToBitmapImage();
+            return converter.Convert(((Music)value).AlbumImage, targetType, parameter, language);
+
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -54,7 +61,7 @@ namespace MusicUIDemo
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return ((MusicItem)value).Title;
+            return ((Music)value).Title;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -66,7 +73,7 @@ namespace MusicUIDemo
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return ((MusicItem)value).Artist;
+            return ((Music)value).Artist;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -74,13 +81,13 @@ namespace MusicUIDemo
             throw new NotImplementedException();
         }
     }    
-    public class MusicItemToMaxTimeSeconds : ICoverterBase
+    public class MusicToMaxTimeSeconds : ICoverterBase
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var time = ((MusicItem)value).Time;
+            var seconds = (double)((Music)value).Time;
 
-            return (double)time.Hour * 3600 + time.Minute * 60 + time.Second;
+            return seconds;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -92,7 +99,7 @@ namespace MusicUIDemo
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return ((MusicPlayer)value).PlayedSeconds;
+            return ((MusicPlayer)value).CurrentTime;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -105,7 +112,8 @@ namespace MusicUIDemo
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return ((MusicItem)value).Time.ToLongTimeString();
+            var time = ((Music)value).Time;
+            return $"{time / 60:00}:{time % 60:00}";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -125,5 +133,34 @@ namespace MusicUIDemo
             throw new NotImplementedException();
         }
     }
+    public class ByteArrayToBitmapImage : ICoverterBase
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if(value ==null) return null;
+            var buffer = (byte[])value;
+            MemoryStream ms = new(buffer);
+            BitmapImage bitmapImage = new();
+            bitmapImage.SetSource(ms.AsRandomAccessStream());
+            return bitmapImage;
+        }
 
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class SecondsToString : ICoverterBase
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            var seconds = (double)value;
+            return string.Format("{0:00}:{1:00}", seconds / 60, seconds % 60);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

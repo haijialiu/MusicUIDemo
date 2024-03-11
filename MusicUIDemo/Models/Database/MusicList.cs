@@ -10,9 +10,12 @@ using System.Threading.Tasks;
 
 namespace MusicUIDemo.Models.Database
 {
+    [EntityTypeConfiguration(typeof(MusicListEntityTypeConfiguration))]
     public class MusicList
     {
         public int Id { get; set; }
+        [Required]
+        public string Title {  get; set; }
         [Required]
         public string Name { get; set; }
 
@@ -26,7 +29,19 @@ namespace MusicUIDemo.Models.Database
         {
             builder
                 .Property(musicList => musicList.CreatedTime)
-                .HasDefaultValueSql("datetime()"); //sqlite
+                .HasDefaultValue(DateTime.Now);
+
+            builder
+                .HasMany(musicList => musicList.Musics)
+                .WithMany(music => music.MusicLists)
+                .UsingEntity<MusicMusicList>();
+
+            //builder.HasData(new MusicList()
+            //{
+            //    Id = 1,
+            //    Title = "default",
+            //    Name = "默认列表",
+            //});
         }
     }
 }

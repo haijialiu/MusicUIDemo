@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Media.Imaging;
 using MusicUIDemo.common;
 using MusicUIDemo.Models;
+using MusicUIDemo.Models.Database;
 using MusicUIDemo.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -19,11 +20,9 @@ namespace MusicUIDemo.Models
     public class MusicPlayer : BindableBase
     {
         //播放列表
-        public ObservableCollection<MusicItem> PlayList { get; set; } = null;
+        public ObservableCollection<Music> PlayList { get; set; } = null;
         //当前播放歌曲的序号
         private int currentIndex = 0;
-
-        private MusicListViewModel viewModel = MusicListViewModel.GetIntance();
 
         public int CurrentPlayIndex
         {
@@ -57,37 +56,11 @@ namespace MusicUIDemo.Models
             set => SetProperty(ref status, value); 
         }
         //当前播放的音乐，其实就是PlayList[CurrentPlayIndex]
-        private MusicItem currentMusic;
-        public MusicItem CurrentMusic 
+        private Music currentMusic;
+        public Music CurrentMusic 
         {
             get => currentMusic;
             set => SetProperty(ref currentMusic, value);
-        }
-        private TimeOnly playedTime;
-
-        public TimeOnly PlayedTime
-        {
-            get => playedTime;
-            set => SetProperty(ref playedTime, value);
-        }
-        private double playedSeconds;
-        public double PlayedSeconds
-        {
-            get => playedSeconds;
-            set
-            {
-
-                if (value > 0)
-                {
-                    playedSeconds = value;
-                    OnPropertyChanged(nameof(PlayedSeconds));
-                    int minute = (int)(value / 60);
-                    int hour = (int)(value / 3600);
-                    int second = (int)(value % 60);
-                    PlayedTime = new TimeOnly(hour, minute, second);
-                }
-
-            }
         }
 
         //TODO: 音量调节(暂未实现）
@@ -100,25 +73,25 @@ namespace MusicUIDemo.Models
             set => SetProperty(ref mode, value);
         }
         //当前播放时间
-        private TimeOnly currentTime=new(0,0,0);
-        public TimeOnly CurrentPlayTime
+        private double currentTime=0;
+        public double CurrentTime
         {
             get => currentTime;
             set => SetProperty(ref currentTime, value);
         }
-        //这首歌一共多久
-        private TimeOnly totalTime;
-        public TimeOnly TotalTime
+        //时长
+        private double totalTime;
+        public double TotalTime
         {
             get => totalTime;
             set =>  SetProperty(ref totalTime, value);
         }
-        private static readonly FFmpegPlayer FFmpegPlayer;
+
         static MusicPlayer()
         {
             FFmpegPlayer.InitPlayer();
         }
-        public static void ReplacePlayList(List<MusicItem> list)
+        public static void ReplacePlayList(List<Music> list)
         {
             FFmpegPlayer.InputMusic(list);
         }

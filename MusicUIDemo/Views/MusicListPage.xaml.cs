@@ -35,7 +35,8 @@ namespace MusicUIDemo.Views
         {
             InitializeComponent();
             ViewModel = MusicListViewModel.GetIntance();
-            music_list.ItemsSource = ViewModel.MusicItems;
+            //music_list.ItemsSource = ViewModel.MusicItems;
+            music_list.ItemsSource = ViewModel.Musics;
         }
         public MusicListViewModel ViewModel { get; set; }
 
@@ -64,9 +65,13 @@ namespace MusicUIDemo.Views
             var item = (sender as FrameworkElement).DataContext;
 
             int index = music_list.Items.IndexOf(item);
-            ViewModel.MusicItems.RemoveAt(index);
+            ViewModel.Musics.RemoveAt(index);
             MusicPlayer.Operate("remove", index.ToString());
         }
 
+        public static string TimeFormat(int seconds)
+        {
+            return string.Format("{0}:{1}", seconds/60,seconds%60);
+        }
     }
 }

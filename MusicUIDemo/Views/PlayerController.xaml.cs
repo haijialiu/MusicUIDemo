@@ -56,7 +56,7 @@ namespace MusicUIDemo.Views
                     {
                         //修改值会触发onChanged 刷新UI
                         player.CurrentPlayIndex = current_index;
-                        player.PlayedSeconds = FFmpegPlayer.PlayedTime();
+                        player.CurrentTime= FFmpegPlayer.PlayedTime();
  
                     });
                 }

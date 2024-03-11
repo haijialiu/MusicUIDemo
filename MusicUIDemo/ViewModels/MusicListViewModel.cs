@@ -1,18 +1,13 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Xaml.Media.Imaging;
 using MusicUIDemo.common;
 using MusicUIDemo.Models;
 using MusicUIDemo.Models.Database;
-using MusicUIDemo.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Storage.Streams;
 
 
 namespace MusicUIDemo.ViewModels
@@ -27,45 +22,52 @@ namespace MusicUIDemo.ViewModels
         private MusicListViewModel() 
         {
 
-            using (var context = new DataContext())
-            {
-                var musics = context.Musics.ToList();
+            var context = new DataContext();
 
-                foreach (var music in musics)
-                {
-                    MusicItems.Add(new MusicItem()
-                    {
-                        Id = music.Id,
-                        Title = music.Title,
-                        Album = music.Album,
-                        FilePath = music.FilePath,
-                        AlbumImage = ByteToBitmapImage(music.AlbumImage),
-                        Time = new(music.Time),
-                    });
-                }
+            var musics = context.Musics;
 
 
-
-            }
-            
             //var folderPath = @"C:\Users\89422\source\repos\GetStartedApp\GetStartedApp\Assets\music";
             //var files_path = Directory.GetFiles(folderPath);
-
+            //int index = 1;
 
             //foreach (var file_path in files_path)
             //{
-            //    var item = MediaInfo.GetMusicItem(file_path);
-            //    var music = MediaInfo.GetMusic(file_path);
-            //    MusicItems.Add(item);
-            //    musicList.Add(item);
+            //    var item = MediaInfo.GetMusic(file_path);
+            //    item.Id = index;
+            //    index++;
+            //    musics.Add(item);
             //}
+            //var musiclist = context.MusicList;
+            //musiclist.Add(new Models.Database.MusicList() { Id = 1,Title="default",Name="默认歌单",CreatedTime=DateTime.Now  });
+            //var musicMusiclist = context.MusicMusicLists;
+            //musicMusiclist.Add(new MusicMusicList() { MusicId = 1, MusicListId = 1 });
+            //musicMusiclist.Add(new MusicMusicList() { MusicId = 2, MusicListId = 1 });
+            //musicMusiclist.Add(new MusicMusicList() { MusicId = 3, MusicListId = 1 });
+            //musicMusiclist.Add(new MusicMusicList() { MusicId = 4, MusicListId = 1 });
+            //musicMusiclist.Add(new MusicMusicList() { MusicId = 5, MusicListId = 1 });
+            //musicMusiclist.Add(new MusicMusicList() { MusicId = 6, MusicListId = 1 });
+            //musicMusiclist.Add(new MusicMusicList() { MusicId = 7, MusicListId = 1 });
+            //musicMusiclist.Add(new MusicMusicList() { MusicId = 8, MusicListId = 1 });
+            //musicMusiclist.Add(new MusicMusicList() { MusicId = 9, MusicListId = 1 });
+            //musicMusiclist.Add(new MusicMusicList() { MusicId = 10, MusicListId = 1 });
+            //musicMusiclist.Add(new MusicMusicList() { MusicId = 11, MusicListId = 1 });
+            //musicMusiclist.Add(new MusicMusicList() { MusicId = 12, MusicListId = 1 });
+
+            //context.SaveChanges();
+
+            var musicList = context.MusicList.Include(list => list.Musics).Single(list => list.Id == 1);
+            musicList.Musics.ForEach(Musics.Add);
+
+            
+
 
 
             Player = new MusicPlayer
             {
-                PlayList = MusicItems
+                PlayList = Musics
             };
-            MusicPlayer.ReplacePlayList(DefaultMusicList);
+            MusicPlayer.ReplacePlayList(musicList.Musics);
            
 
         }
@@ -78,10 +80,11 @@ namespace MusicUIDemo.ViewModels
             return bitmapImage;
         }
         public MusicPlayer Player { get; set; }
-        private readonly List<MusicItem> musicList = [];
-        public ObservableCollection<MusicItem> MusicItems { get; } = [];
+        private readonly List<Music> MusicList = [];
+
+        public ObservableCollection<Music> Musics { get; } = [];
         
-        public List<MusicItem> DefaultMusicList { get { return musicList; } }
+        public List<Music> DefaultMusicList { get { return MusicList; } }
 
 
 

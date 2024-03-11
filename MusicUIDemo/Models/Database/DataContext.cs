@@ -14,7 +14,8 @@ namespace MusicUIDemo.Models.Database
     {
         public DbSet<Music> Musics { get; set; }
         public DbSet<MusicList> MusicList { get; set; }
-        
+        public DbSet<MusicMusicList> MusicMusicLists { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite(@"Data Source=C:\Users\89422\source\repos\MusicUIDemo\MusicUIDemo\Models\Database\localmusic.sqlite");
@@ -22,21 +23,7 @@ namespace MusicUIDemo.Models.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var folderPath = @"C:\Users\89422\source\repos\GetStartedApp\GetStartedApp\Assets\music";
-            var files_path = Directory.GetFiles(folderPath);
-
-            List<Music> list = [];
-
-            foreach (var file_path in files_path)
-            {
-
-                var item = MediaInfo.GetMusic(file_path);
-                item.Id = list.Count + 1;
-                list.Add(item);
-
-            }
-
-            modelBuilder.Entity<Music>().HasData(list);
+            modelBuilder.Entity<MusicMusicList>();
         }
 
     }

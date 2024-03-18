@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using MusicUIDemo.Models.Database;
 
 namespace MusicUIDemo.common
 {
@@ -43,13 +42,6 @@ namespace MusicUIDemo.common
             if (seconds > 0)
             {
                 return (long)seconds;
-
-                //Microsoft.UI.Dispatching.DispatcherQueue dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
-                //dispatcherQueue.TryEnqueue(() =>
-                //{
-                //    // Update UI here
-                //    player.PlayedSeconds = seconds;
-                //});
             }
             return 0;
 

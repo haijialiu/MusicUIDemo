@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicUIDemo", "MusicUIDemo\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FFmpegAudio", "FFmpegAudio\FFmpegAudio.vcxproj", "{A6B244AA-25EE-4F75-A04C-6D5428B7105D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MediaInfo", "MediaInfo\MediaInfo.vcxproj", "{391D5834-3293-4663-99ED-CE9D1CCE3EE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -47,6 +49,18 @@ Global
 		{A6B244AA-25EE-4F75-A04C-6D5428B7105D}.Release|x64.Build.0 = Release|x64
 		{A6B244AA-25EE-4F75-A04C-6D5428B7105D}.Release|x86.ActiveCfg = Release|Win32
 		{A6B244AA-25EE-4F75-A04C-6D5428B7105D}.Release|x86.Build.0 = Release|Win32
+		{391D5834-3293-4663-99ED-CE9D1CCE3EE8}.Debug|ARM64.ActiveCfg = Debug|x64
+		{391D5834-3293-4663-99ED-CE9D1CCE3EE8}.Debug|ARM64.Build.0 = Debug|x64
+		{391D5834-3293-4663-99ED-CE9D1CCE3EE8}.Debug|x64.ActiveCfg = Debug|x64
+		{391D5834-3293-4663-99ED-CE9D1CCE3EE8}.Debug|x64.Build.0 = Debug|x64
+		{391D5834-3293-4663-99ED-CE9D1CCE3EE8}.Debug|x86.ActiveCfg = Debug|Win32
+		{391D5834-3293-4663-99ED-CE9D1CCE3EE8}.Debug|x86.Build.0 = Debug|Win32
+		{391D5834-3293-4663-99ED-CE9D1CCE3EE8}.Release|ARM64.ActiveCfg = Release|x64
+		{391D5834-3293-4663-99ED-CE9D1CCE3EE8}.Release|ARM64.Build.0 = Release|x64
+		{391D5834-3293-4663-99ED-CE9D1CCE3EE8}.Release|x64.ActiveCfg = Release|x64
+		{391D5834-3293-4663-99ED-CE9D1CCE3EE8}.Release|x64.Build.0 = Release|x64
+		{391D5834-3293-4663-99ED-CE9D1CCE3EE8}.Release|x86.ActiveCfg = Release|Win32
+		{391D5834-3293-4663-99ED-CE9D1CCE3EE8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

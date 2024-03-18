@@ -5,39 +5,101 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MusicUIDemo"
     xmlns:views="using:MusicUIDemo.Views"
+    xmlns:models="using:MusicUIDemo.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    
-    <Grid MinWidth="1280" MinHeight="720">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="150"/>
-        </Grid.RowDefinitions>
-        <Border Background="#FFFACD"/>
-        <Border Grid.Column ="1" Background="#F0FFF0"/>
-        <Border Grid.Row="1" Grid.ColumnSpan="2" Background="#E6E6FA"/>
+    <Page>
+        <Grid MinWidth="1280" MinHeight="720">
+            <Grid.Resources>
+                <CommandBarFlyout x:Name="MusicListItemCommandsFlyout" AlwaysExpanded="True">
+                    <CommandBarFlyout.SecondaryCommands>
+                        <AppBarButton x:Name="ListPlay" Label="播放" Icon="Play" Click="PlayAppBarButton_Click"/>
+                        <AppBarButton x:Name="ListDelete" Label="删除" Icon="Delete"/>
+                        <AppBarButton x:Name="ListRename" Label="重命名" Icon="Rename"/>
+                    </CommandBarFlyout.SecondaryCommands>
+
+                </CommandBarFlyout>
+                
+                <DataTemplate x:Key="NavigationItemTemplate" x:DataType="models:MusicList">
+                    <NavigationViewItem Content="{Binding Name}" Tag="MusicList" DataContext="{x:Bind Id}"/>
+                </DataTemplate>
 
 
-        <NavigationView Grid.Column="1" Grid.Row="0" x:Name="MainNavition" 
-                        SelectionChanged="MainNavition_SelectionChanged" OpenPaneLength="250">
-            <NavigationView.Header>
-                <TextBlock TextAlignment="Start" x:Name="NaviHeader" Text="主页"/>
-            </NavigationView.Header>
-            <NavigationView.MenuItems>
-                <NavigationViewItem Icon="Home" Content="主页" Tag="MainPage"/>
-                <NavigationViewItem Icon="Favorite" Content="我喜欢" Tag="Favo"/>
-                <NavigationViewItem Icon="Download" Content="本地音乐" Tag="Local"/>
-                <ListView x:Name="music_list">
+                <DataTemplate x:Key="1" >
+
+                </DataTemplate>
+                <DataTemplate x:Key="2">
+
+                </DataTemplate>
+
+
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="150"/>
+            </Grid.RowDefinitions>
+            <Border Background="#FFFACD"/>
+            <Border Grid.Column ="1" Background="#F0FFF0"/>
+            <Border Grid.Row="1" Grid.ColumnSpan="2" Background="#E6E6FA"/>
+
+
+            <!--<NavigationView Grid.Column="1" Grid.Row="0" x:Name="MainNavition" 
+                        SelectionChanged="MainNavition_SelectionChanged" 
+                        ItemInvoked="MainNavition_ItemInvoked"Command bar flyout
+                        IsSettingsVisible="False"
+                        OpenPaneLength="250">-->
+            <NavigationView Grid.Column="1" Grid.Row="0" x:Name="MainNavition" 
+                        ItemInvoked="MainNavition_ItemInvoked"
+                        IsSettingsVisible="False"
+                        OpenPaneLength="300">
+                <!--<NavigationView.HeaderTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <NavigationViewItemHeader Content="{x:Bind ToString()}"/>
+                    </DataTemplate>
+                </NavigationView.HeaderTemplate>
+                <NavigationView.MenuItemTemplate>
+                    <DataTemplate x:DataType="models:MusicList">
+                        <ItemContainer>
+                            <NavigationViewItem Content="{x:Bind Name}"/>
+                        </ItemContainer>
+                    </DataTemplate>
+                </NavigationView.MenuItemTemplate>-->
+
+                <NavigationView.Header>
+                    <TextBlock TextAlignment="Start" x:Name="NaviHeader" Text="主页"/>
+                </NavigationView.Header>
+
+                <NavigationView.MenuItems>
+                    <NavigationViewItemHeader Content="我的音乐"/>
+                    <NavigationViewItem Icon="Home" Content="主页" Tag="MainPage"/>
+                    <NavigationViewItem Icon="Favorite" Content="我喜欢" Tag="MusicList" DataContext="2" />
+                    <NavigationViewItem Icon="Download" Content="本地音乐" Tag="MusicList" DataContext="1"/>
+                    <NavigationViewItemHeader Content="自建歌单"/>
+                    <!--自建歌单以代码动态渲染-->
                     
-                </ListView>
-            </NavigationView.MenuItems>
-            <Frame x:Name="contentFrame"/>
-        </NavigationView>
-        <views:PlayerController Grid.Row="2"/>
-    </Grid>
+                    <!--<NavigationViewItem Content="自建歌单" MenuItemsSource="{x:Bind ViewModel.UserLists}">
+                    --><!--<NavigationViewItem x:Name="UserLists" Content="自建歌单">-->
+                        <!--<NavigationViewItem.MenuItems>
+                            <ContentControl>
+                                <ContentControl.ContentTemplate>
+                                    <DataTemplate>
+                                        <Button/>
+                                    </DataTemplate>
+                                </ContentControl.ContentTemplate>
+                            </ContentControl>
+                        </NavigationViewItem.MenuItems>--><!--
+                    </NavigationViewItem>-->
 
+                </NavigationView.MenuItems>
+                
+               
+                <Frame x:Name="contentFrame"/>
+            </NavigationView>
+            <views:PlayerController Grid.Row="2"/>
+        </Grid>
+    </Page>
 </Window>

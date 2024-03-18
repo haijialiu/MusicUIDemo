@@ -1,26 +1,18 @@
-﻿using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media.Imaging;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
 using MusicUIDemo.common;
-using MusicUIDemo.Models;
-using MusicUIDemo.Models.Database;
 using MusicUIDemo.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MusicUIDemo.Models
 {
     //播放器
-    public class MusicPlayer : BindableBase
+    public partial class MusicPlayer : ObservableObject
     {
         //播放列表
-        public ObservableCollection<Music> PlayList { get; set; } = null;
+        public ObservableCollection<Music> PlayList { get; set; } = [];
         //当前播放歌曲的序号
         private int currentIndex = 0;
 
@@ -46,63 +38,66 @@ namespace MusicUIDemo.Models
                 }
                 SetProperty(ref currentIndex, value);
                 //OnPropertyChanged(nameof(CurrentMusic));
-                CurrentMusic = PlayList[value];
+                if (value < PlayList.Count)
+                {
+                    CurrentMusic = PlayList[value];
+                }
             }
         }
-        private bool status = false;
-        public bool PlayStatus 
-        {
-            get => status;
-            set => SetProperty(ref status, value); 
-        }
+        [ObservableProperty]
+        private bool playStatus = false;
+
         //当前播放的音乐，其实就是PlayList[CurrentPlayIndex]
+        [ObservableProperty]
         private Music currentMusic;
-        public Music CurrentMusic 
-        {
-            get => currentMusic;
-            set => SetProperty(ref currentMusic, value);
-        }
 
         //TODO: 音量调节(暂未实现）
-        public int Volume { get; set; }
+        private int volume { get; set; }
         //播放模式 0 单曲 1 顺序播放 2 列表循环
-        private int mode = 1;
-        public int PlayMode
-        {
-            get => mode;
-            set => SetProperty(ref mode, value);
-        }
-        //当前播放时间
-        private double currentTime=0;
-        public double CurrentTime
-        {
-            get => currentTime;
-            set => SetProperty(ref currentTime, value);
-        }
-        //时长
-        private double totalTime;
-        public double TotalTime
-        {
-            get => totalTime;
-            set =>  SetProperty(ref totalTime, value);
-        }
+        [ObservableProperty]
+        private int playMode = 1;
 
-        static MusicPlayer()
+        //当前播放时间
+        [ObservableProperty]
+        private double currentTime=0;
+
+        //总时长
+        [ObservableProperty]
+        private double totalTime;
+
+        public MusicPlayer()
         {
             FFmpegPlayer.InitPlayer();
+
         }
-        public static void ReplacePlayList(List<Music> list)
+        ~MusicPlayer()
         {
-            FFmpegPlayer.InputMusic(list);
+            FFmpegPlayer.DestroyPlayer();
         }
+        //切换播放列表
+        public void ReplacePlayList(List<Music> list)
+        {
+
+            FFmpegPlayer.InputMusic(list);
+            PlayList?.Clear();
+            list.ForEach(list => PlayList.Add(list));
+            CurrentMusic = PlayList?[0];
+        }
+        //操作播放器
         public static void Operate(string action, string value)
         {
            FFmpegPlayer.OperatePlayer(action, value);
         }
-        public MusicPlayer ()
+        //切歌
+        public static void SwitchMusic(int index)
         {
-           
-        }
 
+            Operate("switch",index.ToString());
+        }
+        public void Resume()
+        {
+            PlayStatus = true;
+            Operate("resueme", "1");
+        }
     }
 }

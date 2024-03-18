@@ -11,6 +11,6 @@
     <!--Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">-->
 
     <Grid>
-        <TextBlock Text="I am a TextBlock"/>
+        <TextBlock Text="这是主页，当你看到主页是这个样子的时候说明主页还没有做好！"/>
     </Grid>
 </Page>

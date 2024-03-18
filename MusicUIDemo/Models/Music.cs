@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.UI.Xaml.Media.Imaging;
 using MusicUIDemo.common;
+using MusicUIDemo.Models.Database;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MusicUIDemo.Models.Database
+namespace MusicUIDemo.Models
 {
     [Table("musics")]
     [Comment("音乐库")]
@@ -24,14 +25,14 @@ namespace MusicUIDemo.Models.Database
         [Column(Order = 0)]
         public int Id { get; set; }
 
-        [Column(Order = 1),Comment("歌名")]
+        [Column(Order = 1), Comment("歌名")]
         public required string Title { get; set; } = title;
 
         [Column(Order = 2), Comment("歌手")]
         public string Artist { get; set; }
 
         [Column(Order = 3), Comment("专辑名")]
-        public string Album { get; set; } 
+        public string Album { get; set; }
 
         [Column(Order = 4), Comment("时长（秒）")]
         public double Time { get; set; }

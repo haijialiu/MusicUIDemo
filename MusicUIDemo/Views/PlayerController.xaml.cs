@@ -1,26 +1,12 @@
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
 using MusicUIDemo.common;
 using MusicUIDemo.Models;
 using MusicUIDemo.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading;
-using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.System.Threading;
-using Windows.UI.Core;
+using Microsoft.Extensions.DependencyInjection;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -31,7 +17,7 @@ namespace MusicUIDemo.Views
     public sealed partial class PlayerController : UserControl
     {
 
-        public MusicListViewModel viewModel = MusicListViewModel.GetIntance();
+        public MusicListViewModel ViewModel => (MusicListViewModel)DataContext;
         public MusicPlayer player = null;
         private readonly DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
         private readonly TimeSpan span = TimeSpan.FromMilliseconds(100);
@@ -39,8 +25,9 @@ namespace MusicUIDemo.Views
         public PlayerController()
         {
             InitializeComponent();
+            DataContext = App.Current.Services.GetService<MusicListViewModel>();
             Unloaded += PlayControllerCloseEvent;
-            player = viewModel.Player;
+            player = App.Current.Services.GetRequiredService<MusicPlayer>();
 
             threadPoolTimer = ThreadPoolTimer.CreatePeriodicTimer((source) =>
             {

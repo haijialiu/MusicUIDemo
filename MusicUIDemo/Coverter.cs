@@ -1,7 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media.Imaging;
 using MusicUIDemo.Models;
-using MusicUIDemo.Models.Database;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
@@ -7,15 +9,20 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using MusicUIDemo.Models;
+using MusicUIDemo.Models.Database;
+using MusicUIDemo.ViewModels;
 using MusicUIDemo.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Services.Maps;
 using WinRT;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -25,6 +32,7 @@ namespace MusicUIDemo
     /// <summary>
     /// An empty window that can be used on its own or navigated to within a Frame.
     /// </summary>
+
 
 
     public sealed partial class MainWindow : Window
@@ -48,14 +56,25 @@ namespace MusicUIDemo
         //public static int MaxWindowWidth { get; set; } = 1800;
         public static int MinWindowHeight { get; set; } = 850;
         //public static int MaxWindowHeight { get; set; } = 1600;
+        private object Context;
+        public MusicListViewModel ViewModel => (MusicListViewModel)Context;
+        public ObservableCollection<MusicList> MusicLists;
+        private MusicPlayer player;
         public MainWindow()
         {
+
+            player = App.Current.Services.GetRequiredService<MusicPlayer>();
+            Context = App.Current.Services.GetService<MusicListViewModel>();
             InitializeComponent();
             Activated += MainWindow_Activated;
             RegisterWindowMinMax(this);
             ExtendsContentIntoTitleBar = true;
 
-            contentFrame.Navigate(typeof(MusicListPage));
+
+            GeneratorUserMusicList();
+            contentFrame.Navigate(typeof(MainPage));
+
+
         }
         private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
         {
@@ -63,22 +82,6 @@ namespace MusicUIDemo
             WindowId windowId = Win32Interop.GetWindowIdFromWindow(windowHandle);
             AppWindow appWindow = AppWindow.GetFromWindowId(windowId);
             appWindow.SetIcon(@"Assets\image\music.ico");
-        }
-        private void MainNavition_SelectionChanged(NavigationView sender,
-                                      NavigationViewSelectionChangedEventArgs args)
-        {
-            var selectedItem = (NavigationViewItem)args.SelectedItem;
-            if ((string)selectedItem.Tag == "MainPage")
-            {
-                NaviHeader.Text = "主页";
-                contentFrame.Navigate(typeof(MainPage));
-            }
-            else if ((string)selectedItem.Tag == "Favo")
-            {
-                contentFrame.Navigate(typeof(MusicListPage));
-                NaviHeader.Text = "我喜欢";
-            }
-
         }
         private static void RegisterWindowMinMax(Window window)
         {
@@ -146,7 +149,107 @@ namespace MusicUIDemo
         {
             WM_GETMINMAXINFO = 0x0024,
         }
+
+        /// <summary>
+        /// 手动生成用户歌单
+        /// </summary>
+        private void GeneratorUserMusicList()
+        {
+            var userMusicList = App.Current.Services.GetService<MusicListViewModel>().UserLists.ToList();
+            userMusicList.ForEach(musicList =>
+            {
+
+                var musicListItemCommandsFlyout = new CommandBarFlyout()
+                {
+                    AlwaysExpanded = true,
+                };
+                var playBtn = new AppBarButton()
+                {
+                    Label = "播放",
+                    Icon = new FontIcon()
+                    {
+                        Glyph = "\uE768",
+                    },
+                    DataContext = musicList.Id,
+                };
+                playBtn.Click += PlayAppBarButton_Click;
+                musicListItemCommandsFlyout.SecondaryCommands.Add(playBtn);
+                var deleteBtn = new AppBarButton()
+                {
+                    Label = "删除",
+                    Icon = new FontIcon()
+                    {
+                        Glyph = "\uE74D",
+                    },
+                    DataContext = musicList.Id,
+                };
+                deleteBtn.Click += DeleteAppBarButton_Click;
+                musicListItemCommandsFlyout.SecondaryCommands.Add(deleteBtn);
+                var renameBtn = new AppBarButton()
+                {
+                    Label = "重命名",
+                    Icon = new FontIcon()
+                    {
+                        Glyph = "\uE8AC",
+                    },
+                    DataContext = musicList.Id,
+                };
+                renameBtn.Click += RenameAppBarButton_Click;
+                musicListItemCommandsFlyout.SecondaryCommands.Add(renameBtn);
+
+                MainNavition.MenuItems.Add(new NavigationViewItem()
+                {
+                    Content = musicList.Name,
+                    Tag = "MusicList",
+                    DataContext = musicList.Id,
+                    ContextFlyout = MusicListItemCommandsFlyout,
+                });
+            });
+
+        }
+
+        private void MainNavition_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+
+            NaviHeader.Text = args.InvokedItem?.ToString();
+            if (args.InvokedItemContainer?.Tag?.ToString() == "MusicList")
+            {
+                //using var context = new DataContext();
+                var id = int.Parse(args.InvokedItemContainer.DataContext.ToString());
+                //var musicList = context.MusicList.Include(list => list.Musics).Single(list => list.Id == id).Musics;
+                //ViewModel.SetMusics(musicList);
+                contentFrame.Navigate(typeof(MusicListPage), id);
+            }
+
+        }
+
+        private void PlayAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(sender is AppBarButton appBarButton)
+            {
+                var listId = (int)appBarButton.DataContext;
+                var list = ViewModel.UserLists.Where(list => list.Id == listId).FirstOrDefault().Musics;
+                player.ReplacePlayList(list);
+                ViewModel.ReplacePlayingList(listId);
+                player.Resume();
+            }
+ 
+        }
+        private void DeleteAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void RenameAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+
+    }
+    public class MusicListNavigation
+    {
+        public string Header;
+        public List<MusicList> musicLists;
     }
 
-    
 }

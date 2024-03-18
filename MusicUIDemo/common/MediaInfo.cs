@@ -1,15 +1,8 @@
 ﻿using Microsoft.UI.Xaml.Media.Imaging;
 using MusicUIDemo.Models;
-using MusicUIDemo.Models.Database;
 using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Numerics;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicUIDemo.common
 {
@@ -64,47 +57,6 @@ namespace MusicUIDemo.common
 
    
 
-        public static MusicItem GetMusicItem(string filePath)
-        {
-            MusicItem item =  new();
-
-            if (!File.Exists(filePath)) { throw new FileNotFoundException(); }
-            item.FilePath = filePath;
-
-            int ret = media_load(filePath);
-            var title = Marshal.PtrToStringAnsi(media_title());
-            item.Title = title ?? Path.GetFileNameWithoutExtension(filePath);
-            if (ret >= 0)
-            {
-                MediaInfos infos = get_music_info();
-                item.Artist = Marshal.PtrToStringAnsi(infos.artist);
-                item.Album = Marshal.PtrToStringAnsi(infos.album);
-                int totalSeconds = infos.total_time;
-                item.Time = new TimeOnly(totalSeconds/360, totalSeconds/60,totalSeconds % 60);
-                var albumData = infos.album_info;
-
-                if (albumData.ImageSize > 0)
-                {
-                    byte[] buffer = new byte[albumData.ImageSize];
-                    Marshal.Copy(albumData.Image,buffer,0,(int)albumData.ImageSize);
-                    MemoryStream ms = new(buffer);
-                    BitmapImage bitmapImage = new();
-                    bitmapImage.SetSource(ms.AsRandomAccessStream());
-                    item.AlbumImage = bitmapImage;
-                }
-                else
-                {
-                    item.AlbumImage = new()
-                    {
-                        UriSource = new(uriString: $@"{System.AppDomain.CurrentDomain.BaseDirectory}\Assets\image\music.png")
-                    };
-                }
-            }
-
-            media_free();
-            return item;
-
-        }
     }
     public struct AlbumImageInfo
     {

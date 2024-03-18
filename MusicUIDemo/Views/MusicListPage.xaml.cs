@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -31,16 +33,31 @@ namespace MusicUIDemo.Views
     public sealed partial class MusicListPage : Page
     {
         private DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+        private MusicListViewModel ViewModel => (MusicListViewModel)DataContext;
+        private MusicPlayer player;
         public MusicListPage()
         {
+            DataContext = App.Current.Services.GetService<MusicListViewModel>();
+            player = App.Current.Services.GetRequiredService<MusicPlayer>();
             InitializeComponent();
-            ViewModel = MusicListViewModel.GetIntance();
             //music_list.ItemsSource = ViewModel.MusicItems;
-            music_list.ItemsSource = ViewModel.Musics;
+            //music_list.ItemsSource = ViewModel.Musics;
         }
-        public MusicListViewModel ViewModel { get; set; }
+        public MusicListPage(int musicListIndex)
+        {
+            InitializeComponent();
+            //music_list.ItemsSource = ViewModel.Musics;
+            music_list.ItemsSource = ViewModel.MusicLists[musicListIndex].Musics;
+        }
 
-
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if(e.Parameter is int id)
+            { 
+                music_list.ItemsSource = ViewModel.MusicLists.Where(list => list.Id == id).FirstOrDefault().Musics;
+                //music_list.ItemsSource = ViewModel.MusicLists[id-1].Musics;
+            }
+        }
 
 
         private void Play_Btn_Click(object sender, RoutedEventArgs e)
@@ -49,7 +66,7 @@ namespace MusicUIDemo.Views
 
             int index = music_list.Items.IndexOf(item);
             MusicPlayer.Operate("switch", index.ToString());
-            ViewModel.Player.PlayStatus = true;
+            player.PlayStatus = true;
 
         }
 
@@ -57,7 +74,7 @@ namespace MusicUIDemo.Views
         {
             var musicIndex = music_list.SelectedIndex;
             MusicPlayer.Operate("switch", musicIndex.ToString());
-            ViewModel.Player.PlayStatus = true;
+            player.PlayStatus = true;
         }
 
         private void Remove_Btn_Click(object sender, RoutedEventArgs e)
@@ -65,13 +82,18 @@ namespace MusicUIDemo.Views
             var item = (sender as FrameworkElement).DataContext;
 
             int index = music_list.Items.IndexOf(item);
-            ViewModel.Musics.RemoveAt(index);
-            MusicPlayer.Operate("remove", index.ToString());
+            throw new NotImplementedException();
+            //ViewModel.Musics.RemoveAt(index);
+            //MusicPlayer.Operate("remove", index.ToString());
         }
 
         public static string TimeFormat(int seconds)
         {
             return string.Format("{0}:{1}", seconds/60,seconds%60);
         }
+
+
+
+
     }
 }

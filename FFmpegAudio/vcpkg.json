@@ -1,0 +1,7 @@
+{
+  "dependencies": [
+    "boost-log",
+    "ffmpeg",
+    "sdl2"
+  ]
+}

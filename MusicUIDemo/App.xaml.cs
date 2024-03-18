@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -7,11 +8,11 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using MusicUIDemo.Models;
+using MusicUIDemo.Models.Database;
 using MusicUIDemo.Services;
 using MusicUIDemo.Services.Impl;
 using MusicUIDemo.ViewModels;
 using System;
-
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -30,10 +31,17 @@ namespace MusicUIDemo
         public App()
         {
             Services = ConfigureServices();
+
+            // 运行数据库迁移
+            var context = new DataContext();
+            context.Database.Migrate();
+
             InitializeComponent();
         }
+
         public new static App Current => (App)Application.Current;
         public IServiceProvider Services { get; }
+
         public static IServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
@@ -42,10 +50,11 @@ namespace MusicUIDemo
             services.AddSingleton<MusicPlayer>();
 
             //ViewModel
-            services.AddTransient<MusicListViewModel> ();
+            services.AddTransient<MusicListViewModel>();
 
             return services.BuildServiceProvider();
         }
+
         /// <summary>
         /// Invoked when the application is launched.
         /// </summary>
@@ -58,5 +67,4 @@ namespace MusicUIDemo
 
         private Window m_window;
     }
-    
 }

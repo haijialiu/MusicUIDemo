@@ -10,55 +10,52 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
-
 namespace MusicUIDemo.ViewModels
 {
-
     public sealed class MusicListViewModel : ObservableRecipient
     {
-
         //private static readonly MusicListViewModel instance= new();
         //public static MusicListViewModel GetIntance() => instance;
-        
-        public MusicListViewModel() 
-        {
 
+        public MusicListViewModel()
+        {
             using var context = new DataContext();
             var musics = context.Musics;
 
             //include负责把相关的关联数据查询进来
             var musicList = context.MusicList.Include(list => list.Musics);
             //用户列表
-            UserLists = new ObservableCollection<MusicList>(musicList.Where(list=>list.Type=="user"));
+            UserLists = new ObservableCollection<MusicList>(musicList.Where(list => list.Type == "user"));
 
             MusicLists = new ObservableCollection<MusicList>(musicList);
 
             var playingList = musicList.Single(list => list.Title == "playing");
-            PlayingList = new ObservableCollection<Music>(context.Entry(playingList).Collection(list=>list.Musics).Query());
+            PlayingList = new ObservableCollection<Music>(context.Entry(playingList).Collection(list => list.Musics).Query());
             Player = App.Current.Services.GetRequiredService<MusicPlayer>();
             Player.ReplacePlayList(playingList.Musics);
-           
-
         }
+
         public void ReplacePlayingList(int listId)
         {
             using var context = new DataContext();
             PlayingList.Clear();
             context.MusicList.Include(list => list.Musics).Single(list => list.Id == listId).Musics.ForEach(PlayingList.Add);
         }
-        private MusicPlayer Player { get;}
-        //全部列表 
-        public ObservableCollection<MusicList> MusicLists { get;} = [];
+
+        private MusicPlayer Player { get; }
+
+        //全部列表
+        public ObservableCollection<MusicList> MusicLists { get; } = [];
+
         //用户自定义的列表
         public ObservableCollection<MusicList> UserLists { get; set; } = [];
+
         //当前播放列表
         public ObservableCollection<Music> PlayingList { get; private set; } = [];
-      
 
         //初始化数据库
         private static void Init()
         {
-
             using var context = new DataContext();
 
             var musics = context.Musics;
@@ -90,6 +87,5 @@ namespace MusicUIDemo.ViewModels
             musicMusiclist.Add(new MusicMusicList() { MusicId = 12, MusicListId = 1 });
             context.SaveChanges();
         }
-
     }
 }

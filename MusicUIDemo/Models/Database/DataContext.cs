@@ -18,13 +18,15 @@ namespace MusicUIDemo.Models.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(@"Data Source=C:\Users\89422\source\repos\MusicUIDemo\MusicUIDemo\Models\Database\localmusic.sqlite");
+            string dbPath = Path.Combine(Path.GetDirectoryName(Environment.CurrentDirectory), "localmusic.sqlite");
+            string connectionString = $"Data Source={dbPath}";
+
+            optionsBuilder.UseSqlite(connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MusicMusicList>();
         }
-
     }
 }

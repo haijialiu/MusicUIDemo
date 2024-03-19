@@ -33,7 +33,7 @@ namespace MusicUIDemo
             Services = ConfigureServices();
 
             // 运行数据库迁移
-            var context = new DataContext();
+            using var context = new DataContext();
             context.Database.Migrate();
 
             InitializeComponent();

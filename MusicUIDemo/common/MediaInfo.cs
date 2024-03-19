@@ -8,30 +8,37 @@ namespace MusicUIDemo.common
 {
     public class MediaInfo
     {
-        //TODO: 回头路径记得改回来
-        [DllImport(@"C:\Users\89422\source\repos\MediaInfoDLL\x64\Debug\MediaInfoDLL.dll", CallingConvention = CallingConvention.Cdecl)]
+        private const string MediaInfoDllPath = @"MediaInfoDLL.dll";  //TODO: 回头路径记得改回来
+
+        [DllImport(MediaInfoDllPath, CallingConvention = CallingConvention.Cdecl)]
         private static extern int media_load(string url);
-        [DllImport(@"C:\Users\89422\source\repos\MediaInfoDLL\x64\Debug\MediaInfoDLL.dll", CallingConvention = CallingConvention.Cdecl)]
+
+        [DllImport(MediaInfoDllPath, CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr media_title();
-        [DllImport(@"C:\Users\89422\source\repos\MediaInfoDLL\x64\Debug\MediaInfoDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr media_artist();        
-        [DllImport(@"C:\Users\89422\source\repos\MediaInfoDLL\x64\Debug\MediaInfoDLL.dll", CallingConvention = CallingConvention.Cdecl)]
+
+        [DllImport(MediaInfoDllPath, CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr media_artist();
+
+        [DllImport(MediaInfoDllPath, CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr media_album();
-        [DllImport(@"C:\Users\89422\source\repos\MediaInfoDLL\x64\Debug\MediaInfoDLL.dll", CallingConvention = CallingConvention.Cdecl)]
+
+        [DllImport(MediaInfoDllPath, CallingConvention = CallingConvention.Cdecl)]
         private static extern AlbumImageInfo media_album_png();
-        [DllImport(@"C:\Users\89422\source\repos\MediaInfoDLL\x64\Debug\MediaInfoDLL.dll", CallingConvention = CallingConvention.Cdecl)]
+
+        [DllImport(MediaInfoDllPath, CallingConvention = CallingConvention.Cdecl)]
         private static extern void media_free();
-        [DllImport(@"C:\Users\89422\source\repos\MediaInfoDLL\x64\Debug\MediaInfoDLL.dll", CallingConvention = CallingConvention.Cdecl)]
+
+        [DllImport(MediaInfoDllPath, CallingConvention = CallingConvention.Cdecl)]
         private static extern MediaInfos get_music_info();
-        
+
         public static Music GetMusic(string filePath)
         {
             if (!File.Exists(filePath)) { throw new FileNotFoundException(); }
             int ret = media_load(filePath);
             var title = Marshal.PtrToStringAnsi(media_title());
-            Music music = new(title ?? Path.GetFileNameWithoutExtension(filePath),filePath);
+            Music music = new(title ?? Path.GetFileNameWithoutExtension(filePath), filePath);
 
-            if(ret >= 0)
+            if (ret >= 0)
             {
                 MediaInfos infos = get_music_info();
                 music.Artist = Marshal.PtrToStringAnsi(infos.artist);
@@ -54,16 +61,14 @@ namespace MusicUIDemo.common
             media_free();
             return music;
         }
-
-   
-
     }
+
     public struct AlbumImageInfo
     {
-
         public UInt32 ImageSize;
         public IntPtr Image;
     }
+
     [StructLayout(LayoutKind.Explicit)]
     public struct MediaInfos
     {
